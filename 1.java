@@ -1,2 +1,7 @@
-master 1.java kf finish
-abcd:
+public class A{
+
+	public static void main(String[] args){
+		System.out.prit();
+	}
+}
+
