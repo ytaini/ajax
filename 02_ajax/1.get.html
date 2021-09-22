@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ajax  get 请求</title>
+  <style>
+    #aget{
+      width: 200px;
+      height: 100px;
+      border: 3px solid seagreen;
+    }
+  </style>
+</head>
+<body>
+  <button>点击发送ajax get 请求</button>
+  <div id="aget"></div>
+
+  <script>
+    const btn = document.getElementsByTagName('button')[0]
+    const aget =  document.getElementById('aget')
+
+    btn.onclick = function () {
+      //1.创建xhr对象
+      const xhr = new XMLHttpRequest()
+      
+      //2.初始化。设置请求方式和请求路径
+      // get请求的方式如何传参？？
+      //  通过?传参即可。
+      xhr.open('GET','http://localhost:9000/ajax-get?a=100&b=200')
+
+      //3.发送请求
+      xhr.send()
+
+      //4.事件绑定  处理服务端返回的结果
+      // 服务器返回的结果都放在了xhr对象实例中。
+      // console.log(xhr);
+
+      //何时代表响应完成？
+      // 在xhr对象中存在'readyState'属性，它有四个值，分别是,0,1,2,3,4
+      // 分别代表：
+      // 0:XMLHttpRequest对象没有完成初始化 。即：刚刚创建
+      // 1:XMLHttpRequest对象开始发送请求,调用了open方法，但还没有调用send方法。请求还没有发出
+      // 2:XMLHttpRequest对象的请求发送完,send方法已经调用，数据已经提交到服务器，但没有任何响应
+      // 3:XMLHttpRequest对象开始读取响应，还没有结束,收到了所有的响应消息头，但正文还没有完全收到
+      // 4:XMLHttpRequest对象读取响应结束,一切都收到了
+
+      // 当readyState发生改变时调用。
+      xhr.onreadystatechange = function(){
+        if (xhr.readyState === 4){
+          if (xhr.status >= 200 && xhr.status < 300){
+            console.log(xhr.status); 
+            console.log(xhr.statusText);
+            console.log(xhr.getAllResponseHeaders());
+            console.log(xhr.response);
+            aget.innerHTML = xhr.responseText
+          }
+        }
+      }
+
+    }
+
+  </script>
+</body>
+</html>

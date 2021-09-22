@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <title>3.JQuery-AJAX</title>
+</head>
+<body>
+  <h1>JQuery发送AJAX请求</h1>
+  <hr>
+  <button id="btn1">get方法</button>
+  <button id="btn2">post方法</button>
+  <button id="btn3">ajax方法</button>
+  <script>
+
+    const data = {
+        name:'李四'
+        ,age:20
+      }
+   
+    $('button').eq(0).click(function(){
+      
+
+      $.get(
+        'http://localhost:9000/jquery-ajax',
+        data,
+        function (data,status) {
+          console.log(data);
+          console.log(status);
+        },
+        'json')
+    })
+
+    $('#btn2').click(function () {
+      $.post(
+        'http://localhost:9000/jquery-ajax-post?a=100',
+        data,
+        function (data) {
+         console.log(data); 
+        },
+        'json')
+    })
+  
+    $('#btn3').click(function () {
+      $.ajax({
+        url:'http://localhost:9000/jquery-ajax-post',
+        type: 'POST',
+        contentType: 'application/json',
+        data: data,
+        dataType: 'json',
+        timeout:2000,
+        headers: {
+          name: 'lisi'
+          ,age:18
+        },
+        success(data){
+          console.log(data);
+        },
+        error(){
+          console.log(123);
+        }
+      })
+    })
+    
+    // $.getJSON() 可以完成js'跨域'请求。js默认不能跨域请求。
+    // $.getScript() 动态加载js文件。之前使用script标签时，一并加载js文件。 \
+  </script>
+</body>
+</html>

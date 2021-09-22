@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <title>axios</title>
+</head>
+<body>
+  <h1>Axios发送AJAX请求</h1>
+  <hr>
+  <button id="btn1">get方法</button>
+  <button id="btn2">post方法</button>
+  <button id="btn3">axios方法</button>
+  <script>
+    // const btn1 = document.querySelector('#btn1')
+    // const btn2 = document.querySelector('#btn2')
+    // const btn3 = document.querySelector('#btn3')
+
+    //配置baseURL
+    axios.defaults.baseURL = 'http://localhost:9000'
+
+    $('#btn1').on('click',function (event) {
+      // console.log(event.target);
+      // console.log(this);  
+      // console.log(event.data.name);  
+      axios.get('/jquery-ajax-post',{
+        params: {
+          name:'zs'
+          ,age:20
+        },
+        headers:{
+          stu: 'lisi'
+          ,sex: '0'
+        },
+        responseType: 'json'
+      }).then((response)=> {
+        console.log(response.data.name,response.data.age);
+      })
+    })
+
+
+
+  </script>
+</body>
+</html>

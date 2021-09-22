@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jsonp解决跨域问题</title>
+</head>
+<body>
+  <!-- 
+    1、jsonp,只支持get请求。
+
+    2、在网页中有一些标签天生具有跨域能力，例如:link,script,img
+
+    3、
+   -->
+   <div id="res"></div>
+   用户名：<input type="text"  id="username">
+   <span></span>
+   <script>
+
+     // 1、处理数据。已声明的函数
+     function handle(data) {
+       const res = document.querySelector('#res')
+       res.innerHTML = data.name + '-' + data.age
+     }
+
+     // 2、案例
+     const input = document.querySelector('input')
+     const span = document.querySelector('span')
+    
+     function  disponse(data){
+        span.innerHTML = data.msg
+        input.style.border = '2px solid red'
+     }
+
+
+     input.onblur = function (){
+      //向服务器段发送请求，检测用户名是否存在。
+      //1、创建script标签。
+      const s = document.createElement('script')
+
+      s.src = "http://localhost:9000/jsonp-server1?value=" + this.value
+
+      document.body.appendChild(s)
+
+     }
+   </script>
+
+   <script src="http://localhost:9000/jsonp-server"></script>
+
+</body>
+</html>

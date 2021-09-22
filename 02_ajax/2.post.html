@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ajax  post 请求</title>
+  <style>
+    #apost{
+      width: 200px;
+      height: 100px;
+      border: 3px solid seagreen;
+    }
+  </style>
+</head>
+<body>
+  <div id="apost"></div>
+  <button id="cancalBtn">点击取消ajax请求</button>
+
+  <script>
+    const apost = document.querySelector('#apost')
+
+    let xhr = null
+
+    //解决AJAX请求重复发送的问题。
+    let isSending = false
+    
+    apost.addEventListener('click',function(){
+      //判断当前是否在发送请求。
+      if(isSending){
+        //此时xhr是上一次请求的对象
+        // xhr.abort() // 取消上次请求
+        return //
+      }
+
+      // console.log(this);
+      xhr = new XMLHttpRequest()
+
+      //设置响应体数据的类型。
+      xhr.responseType = 'json'
+      
+      //设置请求超时时间
+      xhr.timeout = 2000
+
+      //设置请求超时的钩子函数
+      xhr.ontimeout = function() {
+        apost.innerHTML = '请求 超时,请重新尝试！！！'
+      }
+
+      //设置网络异常的 钩子函数
+      xhr.onerror = function () {
+        apost.innerHTML = '您的网络出现异常，请稍后重试！！！'
+      }
+
+      isSending = true
+
+      // 保证每次发起的不是同一个请求。解决IE缓存问题
+      //   通过给请求路径加一个参数time = Date.now()
+      
+      // 当页面资源与数据同源时，可以简写url
+      xhr.open('POST','http://localhost:9000/ajax-post?a=100&b=200&time='+Date.now())
+
+      //设置请求头内容
+      xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+      xhr.setRequestHeader('name','zhangsan') //设置自定义请求头
+
+      //设置请求体内容。
+      xhr.send('a=100&b=200')
+
+      // xhr.send({
+      // name:'zs',
+      // age:18
+      // })
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+
+          //当readyState=4时，说明请求发送完成可以再次发送
+          isSending = false
+
+          if(xhr.status >= 200 && xhr.status < 300){
+            // 手动对数据进行转换
+            // let data  = JSON.parse(xhr.response)
+            // apost.innerHTML = data.name + '-' + data.age
+            // console.log(data);
+            
+            const data = xhr.response
+            apost.innerHTML = data.name + '-' + data.age
+            console.log(data);
+          }
+        }
+      }
+    })
+
+    const cbtn = document.querySelector('#cancalBtn')
+
+    //主动取消ajax请求。
+    cbtn.onclick = function () {
+      xhr.abort()
+    }
+  </script>
+</body>
+</html>
